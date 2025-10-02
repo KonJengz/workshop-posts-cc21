@@ -1,8 +1,8 @@
-function InputForm({ error, value, onChange, placeholder, name }) {
+function InputForm({ error, value, onChange, placeholder = "", name }) {
   return (
     <div>
       <input
-        className={`bg-gray-200 py-2 px-4 rounded-full ${
+        className={`bg-gray-200 w-full py-2 px-4 rounded-full ${
           error ? "outline-1 outline-red-500" : "outline-0"
         } `}
         type="text"

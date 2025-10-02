@@ -22,16 +22,22 @@ const usePostStore = create((set) => ({
   actionCreatePost: async (userId, input) => {
     try {
       const res = await createPostApi(userId, input);
-      set((prev) => ({ posts: [...prev.posts, res.data.post] }));
+      set((state) => ({ posts: [...state.posts, res.data.post] }));
     } catch (error) {
       console.log(error);
       throw error;
     }
   },
   actionUpdatePost: async (userId, input) => {
+    console.log("input", input);
     try {
-      await updatePostApi(userId, input);
-      // เขียนเอาเอง
+      const res = await updatePostApi(userId, input);
+      console.log("res actionUpdatePost", res);
+      set((state) => ({
+        posts: state.posts.map((post) =>
+          post.id === input.id ? { ...post, ...res.data.updatePost } : post
+        ),
+      }));
     } catch (error) {
       console.log(error);
       throw error;
@@ -41,8 +47,8 @@ const usePostStore = create((set) => ({
   actionDeletePost: async (userId, postId) => {
     try {
       await deletePostApi(userId, postId);
-      set((prev) => ({
-        posts: prev.posts.filter((post) => post.id !== postId),
+      set((state) => ({
+        posts: state.posts.filter((post) => post.id !== postId),
       }));
     } catch (error) {
       console.log(error);
